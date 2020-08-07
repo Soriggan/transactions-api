@@ -10,11 +10,22 @@ const store = {
   balance:{}
 };
 
-//array.reduce( 
-  //function( id, value, type, array )
+
 function outcomeSum(request, response, next){
-  const {id,value,type}= request.body;
-  
+  const {value,type}= request.body;
+  store.balance.income=0;
+  store.balance.outcome=0;
+  store.balance.total=0;
+  for (const transaction of store.transactions) {
+    if(transaction.type ==='income'){
+      store.balance.income+=transaction.value;
+    }
+    if(transaction.type ==='outcome'){
+      store.balance.outcome+=transaction.value;
+    }
+  }
+  store.balance.total=store.balance.outcome-store.balance.income;
+  next();
 }
 
 function validateTransactionId(request, response, next) {
@@ -38,7 +49,7 @@ app.use(logRequest);
 
 app.use('/transactions/:id',validateTransactionId);
 
-app.get("/transactions", (request, response) => {
+app.get("/transactions",outcomeSum, (request, response) => {
     
     return response.json(store);
 });

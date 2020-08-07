@@ -5,7 +5,17 @@ const app = express();
 
 app.use(express.json());
 
-const transactions =[];
+const transactions = {
+  transactions:[],
+  balance:{}
+};
+
+//array.reduce( 
+  //function( id, value, type, array )
+function outcomeSum(request, response, next){
+  const {id,value,type}= request.body;
+  
+}
 
 function validateTransactionId(request, response, next) {
     const{id}=request.params;
@@ -38,7 +48,7 @@ app.post("/transactions", (request,response) => {
    
     const transaction = { id:uuid(), title, value, type};
 
-    transactions.push(transaction)
+    transactions.transação.push(transaction)
 
     return response.json(transaction)
 });

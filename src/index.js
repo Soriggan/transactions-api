@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-const transactions = {
+const store = {
   transactions:[],
   balance:{}
 };
@@ -40,7 +40,7 @@ app.use('/transactions/:id',validateTransactionId);
 
 app.get("/transactions", (request, response) => {
     
-    return response.json(transactions);
+    return response.json(store);
 });
 
 app.post("/transactions", (request,response) => {
@@ -48,22 +48,22 @@ app.post("/transactions", (request,response) => {
    
     const transaction = { id:uuid(), title, value, type};
 
-    transactions.transação.push(transaction)
+    store.transactions.push(transaction);
 
-    return response.json(transaction)
+    return response.json(transaction);
 });
 
 app.put('/transactions/:id', (request, response) => {
     const {id} = request.params;
     const {title, value, type} = request.body;
 
-    const transIndex = transactions.findIndex((trans) => trans.id == id);
+    const transIndex = store.transactions.findIndex((trans) => trans.id == id);
     
     const transaction = {
         id, title, value, type
     };
     
-    transactions[transIndex] = transaction
+    store.transactions[transIndex] = transaction
 
     return response.json(transaction)
 })
@@ -71,9 +71,9 @@ app.put('/transactions/:id', (request, response) => {
 app.delete("/transactions/:id", (request, response) => {
     const { id } = request.params;
   
-    const tranIndex = transactions.findIndex((trans) => trans.id == id);
+    const tranIndex = store.transactions.findIndex((trans) => trans.id == id);
   
-    transactions.splice(tranIndex, 1);
+    store.transactions.splice(tranIndex, 1);
   
     return response.status(204).send();
   });
